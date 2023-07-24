@@ -63,6 +63,22 @@ document.addEventListener('DOMContentLoaded', function () {
       clearForm();
       errorMessage.textContent = '';
     }
+
+      // Function to add a new subtask input when the + button is clicked
+  function addSubtaskInput() {
+    const subtaskDiv = document.createElement('div');
+    subtaskDiv.className = 'subtask-container';
+    subtaskDiv.innerHTML = `
+      <label for="subtask${subtaskCounter}">Subtask ${subtaskCounter}:</label>
+      <input type="text" class="subtask" required>
+    `;
+
+    subtaskContainer.appendChild(subtaskDiv);
+    subtaskCounter++;
+  }
+
+  // Call the function initially to have the first subtask input
+  addSubtaskInput();
   
     function saveTask() {
       const taskName = document.getElementById('taskName').value;
