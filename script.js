@@ -20,33 +20,29 @@ document.addEventListener('DOMContentLoaded', function () {
       const status = document.getElementById('status').value;
   
       if (!taskName || !startDate || !endDate || !status) {
-        errorMessage.textContent = 'All fields are required.';
+        alert("All fields are required.")
+        // errorMessage.textContent = 'All fields are required.';
         return;
       }
   
       if (new Date(endDate) <= new Date(startDate)) {
-        errorMessage.textContent = 'End date must be after start date.';
+        alert("End date must be after start date.")
+        // errorMessage.textContent = 'End date must be after start date.';
         return;
       }
   
       const subtasks = document.querySelectorAll('.subtask');
       const subtaskList = Array.from(subtasks).map(subtask => subtask.value);
   
-      // const task = {
-      //   taskName,
-      //   subtasks: subtaskList,
-      //   startDate,
-      //   endDate,
-      //   status
-      // };
-
       const task = {
-        taskName: taskName,
+        taskName,
         subtasks: subtaskList,
-        startDate: startDate,
-        endDate: endDate,
-        status: status
+        startDate,
+        endDate,
+        status
       };
+
+      
       
       for (let key in task) {
         if (key === "subtasks") {
@@ -86,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function () {
       errorMessage.textContent = '';
     }
 
-      // Function to add a new subtask input when the + button is clicked
+  // Function to add a new subtask input when the + button is clicked
   function addSubtaskInput() {
     const subtaskDiv = document.createElement('div');
     subtaskDiv.className = 'subtask-container';
@@ -99,8 +95,37 @@ document.addEventListener('DOMContentLoaded', function () {
     subtaskCounter++;
   }
 
-  // Call the function initially to have the first subtask input
-  addSubtaskInput();
+  // Function to handle changes in the start and end dates
+  function handleDateChange() {
+    const startDateInput = document.getElementById('startDate');
+    const endDateInput = document.getElementById('endDate');
+    const statusInput = document.getElementById('status');
+
+    const startDate = new Date(startDateInput.value);
+    const endDate = new Date(endDateInput.value);
+    const today = new Date();
+
+    // Disable dates before today in both start date and end date inputs
+    startDateInput.setAttribute("min", today.toISOString().split("T")[0]);
+    endDateInput.setAttribute("min", today.toISOString().split("T")[0]);
+
+    if (startDate > today) {
+      statusInput.value = "in-progress";
+    } else if (endDate < today) {
+      statusInput.value = "due-passed";
+    } else {
+      statusInput.value = "complete";
+    }
+  }
+
+  // Add event listeners to start date and end date inputs
+  const startDateInput = document.getElementById('startDate');
+  const endDateInput = document.getElementById('endDate');
+  startDateInput.addEventListener('change', handleDateChange);
+  endDateInput.addEventListener('change', handleDateChange);
+
+  // Initial call to handleDateChange to set the initial status
+  handleDateChange();
   
     function saveTask() {
       const taskName = document.getElementById('taskName').value;
@@ -178,7 +203,9 @@ document.addEventListener('DOMContentLoaded', function () {
   
     function deleteTask(row) {
       if (row) {
-        row.remove();
+        if (window.confirm("Are you sure you want to delete this task?")) {
+          row.remove();
+        }
       }
     }
   
