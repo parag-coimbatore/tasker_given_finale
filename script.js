@@ -32,13 +32,35 @@ document.addEventListener('DOMContentLoaded', function () {
       const subtasks = document.querySelectorAll('.subtask');
       const subtaskList = Array.from(subtasks).map(subtask => subtask.value);
   
+      // const task = {
+      //   taskName,
+      //   subtasks: subtaskList,
+      //   startDate,
+      //   endDate,
+      //   status
+      // };
+
       const task = {
-        taskName,
+        taskName: taskName,
         subtasks: subtaskList,
-        startDate,
-        endDate,
-        status
+        startDate: startDate,
+        endDate: endDate,
+        status: status
       };
+      
+      for (let key in task) {
+        if (key === "subtasks") {
+          console.log(`${key}:`);
+          task[key].forEach((subtask) => {
+            console.log(`- ${subtask}`);
+          });
+        } else {
+          console.log(`${key}: ${task[key]}`);
+        }
+      }
+      
+
+
   
       const row = document.createElement('tr');
       row.innerHTML = `
