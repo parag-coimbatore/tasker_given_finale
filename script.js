@@ -184,6 +184,8 @@ document.addEventListener('DOMContentLoaded', function () {
   
       errorMessage.textContent = '';
     }
+
+    
   
     function editTask(task, row) {
       isEditMode = true;
@@ -194,12 +196,20 @@ document.addEventListener('DOMContentLoaded', function () {
       document.getElementById('endDate').value = task.endDate;
       document.getElementById('status').value = task.status;
   
-      clearSubtasks();
-      task.subtasks.forEach(subtask => addSubtaskInput(subtask));
+      subtaskContainer.innerHTML = '';
+  
+      task.subtasks.forEach(subtask => {
+        const subtaskInput = document.createElement('input');
+        subtaskInput.type = 'text';
+        subtaskInput.classList.add('subtask-input');
+        subtaskInput.value = subtask;
+        subtaskContainer.appendChild(subtaskInput);
+      });
   
       addButton.style.display = 'none';
       saveButton.style.display = 'inline-block';
     }
+  
   
     function deleteTask(row) {
       if (row) {
@@ -253,6 +263,13 @@ document.addEventListener('DOMContentLoaded', function () {
       subtaskSection.appendChild(addButton);
   
       subtaskCounter++;
+    }
+
+    function addSubtask() {
+      const subtaskInput = document.createElement('input');
+      subtaskInput.type = 'text';
+      subtaskInput.classList.add('subtask-input');
+      subtaskContainer.appendChild(subtaskInput);
     }
   
     function clearSubtasks() {
